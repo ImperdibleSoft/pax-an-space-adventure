@@ -1,3 +1,4 @@
+import useWindowSize from '@rehooks/window-size';
 import * as React from 'react';
 import injectSheet from 'react-jss';
 import { isProduction } from '../../../common/utils/platforms';
@@ -39,46 +40,54 @@ interface IOwnProps {
   classes: { [key: string]: string };
 }
 
-const unstyledFooterView = ({ classes }: IOwnProps) => (
-  <footer className={classes.wrapper}>
-    <div className={classes.content}>
-      <p>
-        <>
+const unstyledFooterView = ({ classes }: IOwnProps) => {
+  const windowSize = useWindowSize();
+
+  if (windowSize.innerHeight >= screen.height) {
+    return null;
+  }
+
+  return (
+    <footer className={classes.wrapper}>
+      <div className={classes.content}>
+        <p>
+          <>
+            <Link
+              options={{
+                id: 'app-web',
+                label: APP_NAME,
+                to: APP_WEB,
+              }}
+            />
+            {!isProduction() && ` v${APP_VERSION}`}
+          </>
+          {' | '}
           <Link
             options={{
-              id: 'app-web',
-              label: APP_NAME,
-              to: APP_WEB,
+              id: 'app-github',
+              isExternal: true,
+              label: 'Github',
+              to: APP_REPOSITORY,
             }}
           />
-          {!isProduction() && ` v${APP_VERSION}`}
-        </>
-        {' | '}
-        <Link
-          options={{
-            id: 'app-github',
-            isExternal: true,
-            label: 'Github',
-            to: APP_REPOSITORY,
-          }}
-        />
-        {' | '}
-        {new Date().getFullYear()}
-      </p>
-      <p>
-        An original idea of{' '}
-        <Link
-          options={{
-            id: 'original-idea',
-            isExternal: true,
-            label: 'Jaime Altozano',
-            to: 'https://www.youtube.com/watch?v=RnsimJFg1oQ',
-          }}
-        />
-      </p>
-    </div>
-  </footer>
-);
+          {' | '}
+          {new Date().getFullYear()}
+        </p>
+        <p>
+          An original idea of{' '}
+          <Link
+            options={{
+              id: 'original-idea',
+              isExternal: true,
+              label: 'Jaime Altozano',
+              to: 'https://www.youtube.com/watch?v=RnsimJFg1oQ',
+            }}
+          />
+        </p>
+      </div>
+    </footer>
+  );
+};
 
 const FooterView = injectSheet(sheet)(unstyledFooterView);
 

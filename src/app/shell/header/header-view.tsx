@@ -1,3 +1,4 @@
+import useWindowSize from '@rehooks/window-size';
 import classnames from 'classnames';
 import * as React from 'react';
 import injectSheet from 'react-jss';
@@ -122,26 +123,40 @@ const unstyledHeaderView = ({
   handleToggleSoundEffects,
   isMusicEnabled,
   isOpen,
-}: IOwnProps) => (
-  <header className={classes.wrapper}>
-    <MenuButton className={classes.menuButton} isOpen={isOpen} onClick={handleToggleMenu} />
+}: IOwnProps) => {
+  const windowSize = useWindowSize();
 
-    <div className={classnames(classes.homeWrapper, { [classes.homeOpen]: isOpen })}>
-      <NavLink className={classes.home} activeClassName={classes.homeActive} to={HOME} exact onClick={handleNavigation}>
-        <img className={classes.logo} src={logo} />
-      </NavLink>
-    </div>
+  if (windowSize.innerHeight >= screen.height) {
+    return null;
+  }
 
-    <div>
-      <NavLink to={PLAY} exact>
-        Play
-      </NavLink>
+  return (
+    <header className={classes.wrapper}>
+      <MenuButton className={classes.menuButton} isOpen={isOpen} onClick={handleToggleMenu} />
 
-      <button onClick={handleToggleMusic}>Turn {isMusicEnabled ? 'off' : 'on'} music</button>
-      <button onClick={handleToggleSoundEffects}>Turn {areSoundEffectsEnabled ? 'off' : 'on'} sounds</button>
-    </div>
-  </header>
-);
+      <div className={classnames(classes.homeWrapper, { [classes.homeOpen]: isOpen })}>
+        <NavLink
+          className={classes.home}
+          activeClassName={classes.homeActive}
+          to={HOME}
+          exact
+          onClick={handleNavigation}
+        >
+          <img className={classes.logo} src={logo} />
+        </NavLink>
+      </div>
+
+      <div>
+        <NavLink to={PLAY} exact>
+          Play
+        </NavLink>
+
+        <button onClick={handleToggleMusic}>Turn {isMusicEnabled ? 'off' : 'on'} music</button>
+        <button onClick={handleToggleSoundEffects}>Turn {areSoundEffectsEnabled ? 'off' : 'on'} sounds</button>
+      </div>
+    </header>
+  );
+};
 
 const HeaderView = injectSheet(sheet)(unstyledHeaderView);
 

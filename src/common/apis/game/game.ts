@@ -22,9 +22,11 @@ const gameApi = {
       const headerDom = document.querySelector('header');
       const headerHeight = headerDom ? headerDom.offsetHeight : HEADER_SIZE;
 
+      const isFullScreen = window.innerHeight >= screen.height;
+
       display.resize(
         window.innerWidth,
-        window.innerHeight - headerHeight,
+        isFullScreen ? window.innerHeight : window.innerHeight - headerHeight,
         game.world.getHeight() / game.world.getWidth()
       );
       display.render();
