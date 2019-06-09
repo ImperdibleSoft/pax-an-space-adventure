@@ -1,12 +1,12 @@
 export interface IAssetsManager {
+  getTileSetImage: () => CanvasImageSource | undefined;
   requestImage: (url: string, callback: (image: HTMLImageElement) => void) => void;
   requestJSON: (url: string, callback: (object: any) => void) => void;
   setTileSetImage: (newTileSetImage: CanvasImageSource) => void;
-  tileSetImage?: CanvasImageSource;
 }
 
 const createAssetsManager = (): IAssetsManager => {
-  let tileSetImage;
+  let tileSetImage: CanvasImageSource;
 
   const requestImage = (url: string, callback: (image: HTMLImageElement) => void) => {
     const image = new Image();
@@ -26,10 +26,10 @@ const createAssetsManager = (): IAssetsManager => {
   };
 
   return {
+    getTileSetImage: () => tileSetImage,
     requestImage,
     requestJSON,
     setTileSetImage,
-    tileSetImage,
   };
 };
 

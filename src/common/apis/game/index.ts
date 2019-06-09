@@ -1,8 +1,8 @@
-import assets from './assets';
+import game from './game';
 import keyboard from './keyboard';
 
 const gameApi = {
-  assets,
+  game,
   keyboard,
 };
 
