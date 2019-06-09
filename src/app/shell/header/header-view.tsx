@@ -5,7 +5,7 @@ import { NavLink } from 'react-router-dom';
 
 import MenuButton from './menu-button';
 
-import { HOME } from '../../../constants/appRoutes';
+import { HOME, PLAY } from '../../../constants/appRoutes';
 import { PADDING_S, PADDING_XXXL, PAGE_MAX_WIDTH } from '../../../constants/styles/styles';
 import { GREEN, GREY_DARK_3 } from '../../../constants/styles/styles-colors';
 import { TEXT_WHITE } from '../../../constants/styles/styles-fonts';
@@ -116,6 +116,12 @@ const unstyledHeaderView = ({ classes, handleNavigation, handleToggleMenu, isOpe
     <div className={classnames(classes.homeWrapper, { [classes.homeOpen]: isOpen })}>
       <NavLink className={classes.home} activeClassName={classes.homeActive} to={HOME} exact onClick={handleNavigation}>
         <img className={classes.logo} src={logo} />
+      </NavLink>
+    </div>
+
+    <div>
+      <NavLink to={PLAY} exact>
+        Play
       </NavLink>
     </div>
   </header>

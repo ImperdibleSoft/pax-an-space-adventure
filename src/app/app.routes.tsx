@@ -1,6 +1,8 @@
 import * as React from 'react';
 import { RouteComponentProps } from 'react-router';
 
+import Play from './modules/play';
+
 import * as routes from '../constants/appRoutes';
 
 interface IRouteProps {
@@ -14,10 +16,16 @@ interface IRouteConfig {
   render: (routeProps: RouteComponentProps<IRouteProps>) => React.ReactNode;
 }
 
-export const HOME: IRouteConfig = {
+const HOME: IRouteConfig = {
   exact: true,
   path: routes.HOME,
-  render: () => <div />,
+  render: () => <Play />,
 };
 
-export default [HOME];
+const PLAY: IRouteConfig = {
+  exact: true,
+  path: routes.PLAY,
+  render: () => <Play />,
+};
+
+export default [HOME, PLAY];
