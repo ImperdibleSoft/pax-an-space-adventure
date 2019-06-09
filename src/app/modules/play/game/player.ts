@@ -32,6 +32,8 @@ const createPlayer = (initialX: number, initialY: number): IPlayer => {
   let velocityY = movingObject.getVelocityY();
   let xOld = movingObject.getXOld();
   let yOld = movingObject.getYOld();
+  const height = movingObject.getHeight();
+  const width = movingObject.getWidth();
   const velocityMax = movingObject.getVelocityMax();
 
   const animator = createAnimator(frameSets['idle-left'], 10);
@@ -105,7 +107,11 @@ const createPlayer = (initialX: number, initialY: number): IPlayer => {
     ...animator,
 
     // Props
+    getBottom: () => y + height,
     getDirectionX: () => directionX,
+    getLeft: () => x,
+    getRight: () => x + width,
+    getTop: () => y,
     getX: () => x,
     getXOld: () => xOld,
     getY: () => y,

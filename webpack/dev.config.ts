@@ -4,7 +4,7 @@ import webpack from 'webpack';
 
 import { DEVELOPMENT } from '../src/constants/environment';
 
-import baseConfig, { imageLoader, manifestPlugin, paths, regex } from './base.config';
+import baseConfig, { audioLoader, imageLoader, manifestPlugin, paths, regex } from './base.config';
 
 export const appConfig: webpack.Configuration = {
   ...baseConfig,
@@ -24,6 +24,7 @@ export const appConfig: webpack.Configuration = {
 
   module: {
     rules: [
+      audioLoader,
       imageLoader,
 
       // HTML

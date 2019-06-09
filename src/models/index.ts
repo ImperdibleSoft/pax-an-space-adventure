@@ -1,6 +1,10 @@
 import { CSSProperties } from 'react-jss';
 
-export interface IRootState {}
+import { ISettingsState } from './settings';
+
+export interface IRootState {
+  settings: ISettingsState;
+}
 
 export interface ISheet {
   [key: string]: CSSProperties<any>;

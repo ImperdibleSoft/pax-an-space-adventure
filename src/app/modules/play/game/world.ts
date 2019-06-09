@@ -17,7 +17,7 @@ const createWorld = (initialFriction = 0.85, initialGravity = 2) => {
   let columns = 12;
   let rows = 9;
 
-  const player = createPlayer(32, 76);
+  const player = createPlayer(38, 76);
   const tileSet = createTileSet(8, 16);
 
   let zoneId = '000';
@@ -37,32 +37,47 @@ const createWorld = (initialFriction = 0.85, initialGravity = 2) => {
   const collideObject = (object: IMovingObject) => {
     /* I got rid of the world boundary collision. Now it's up to the tiles to keep
     the player from falling out of the world. */
+    console.log('RPG: <world>: CollisionMap', collisionMap);
 
-    let bottom;
-    let left;
-    let right;
-    let top;
-    let value;
-
-    top = Math.floor(object.getTop() / tileSet.tileSize);
-    left = Math.floor(object.getLeft() / tileSet.tileSize);
-    value = collisionMap[top * columns + left];
+    let bottom = -1;
+    let left = Math.floor(object.getLeft() / tileSet.tileSize);
+    let right = -1;
+    let top = Math.floor(object.getTop() / tileSet.tileSize);
+    let collisionIndex = top * columns + left;
+    let value = collisionMap[collisionIndex];
     collider.collide(value, object, left * tileSet.tileSize, top * tileSet.tileSize, tileSet.tileSize);
+    console.log('RPG: <world>: Checking if should collide [T-L]', { bottom, left, right, top, collisionIndex, value });
+    console.log("RPG: <world>: Checking player's new top: ", player.getTop(), player.getBottom());
 
-    top = Math.floor(object.getTop() / tileSet.tileSize);
+    bottom = -1;
+    left = -1;
     right = Math.floor(object.getRight() / tileSet.tileSize);
-    value = collisionMap[top * columns + right];
+    top = Math.floor(object.getTop() / tileSet.tileSize);
+    collisionIndex = top * columns + right;
+    value = collisionMap[collisionIndex];
     collider.collide(value, object, right * tileSet.tileSize, top * tileSet.tileSize, tileSet.tileSize);
+    console.log('RPG: <world>: Checking if should collide [T-R]', { bottom, left, right, top, collisionIndex, value });
+    console.log("RPG: <world>: Checking player's new top: ", player.getTop(), player.getBottom());
 
     bottom = Math.floor(object.getBottom() / tileSet.tileSize);
     left = Math.floor(object.getLeft() / tileSet.tileSize);
-    value = collisionMap[bottom * columns + left];
+    right = -1;
+    top = -1;
+    collisionIndex = bottom * columns + left;
+    value = collisionMap[collisionIndex];
     collider.collide(value, object, left * tileSet.tileSize, bottom * tileSet.tileSize, tileSet.tileSize);
+    console.log('RPG: <world>: Checking if should collide [B-L]', { bottom, left, right, top, collisionIndex, value });
+    console.log("RPG: <world>: Checking player's new top: ", player.getTop(), player.getBottom());
 
     bottom = Math.floor(object.getBottom() / tileSet.tileSize);
+    left = -1;
     right = Math.floor(object.getRight() / tileSet.tileSize);
-    value = collisionMap[bottom * columns + right];
+    top = -1;
+    collisionIndex = bottom * columns + right;
+    value = collisionMap[collisionIndex];
     collider.collide(value, object, right * tileSet.tileSize, bottom * tileSet.tileSize, tileSet.tileSize);
+    console.log('RPG: <world>: Checking if should collide [B-R]', { bottom, left, right, top, collisionIndex, value });
+    console.log("RPG: <world>: Checking player's new top: ", player.getTop(), player.getBottom());
   };
 
   const setup = (zone: IZone) => {
@@ -109,7 +124,11 @@ const createWorld = (initialFriction = 0.85, initialGravity = 2) => {
   };
 
   const update = () => {
+    console.log('RPG: <world>: Updating world');
+
     player.updatePosition(gravity, friction);
+
+    console.log('RPG: <world>: Player position has been updated', player.getTop(), player.getLeft());
 
     collideObject(player);
 

@@ -12,10 +12,22 @@ export const paths = {
 };
 
 export const regex = {
+  audio: /\.mp3$/,
   html: /\.html$/,
   img: /\.(png|jpe?g|gif|ico|svg)$/,
   sw: /sw\.js/,
   ts: /\.(tsx?|js)$/,
+};
+
+export const audioLoader = {
+  exclude: /node_modules/,
+  include: paths.src,
+  test: regex.audio,
+  use: [
+    {
+      loader: 'url-loader',
+    },
+  ],
 };
 
 const imageOptimizations = {

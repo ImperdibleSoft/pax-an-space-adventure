@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { RouteComponentProps } from 'react-router';
 
-import Play from './modules/play';
+import Play from './modules/play/play-wrapper';
 
 import * as routes from '../constants/appRoutes';
 

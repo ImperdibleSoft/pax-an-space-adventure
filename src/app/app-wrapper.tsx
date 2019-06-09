@@ -101,8 +101,12 @@ class AppWrapper extends React.Component<Props> {
   };
 
   public render() {
+    const {
+      store: { settings },
+    } = this.props;
+
     return (
-      <AppView>
+      <AppView areSoundEffectsEnabled={settings.soundEffects} isMusicEnabled={settings.music}>
         <>
           {routes.map(({ exact, path, render }, index) => (
             <Route key={index} exact={exact} path={path} render={render} />

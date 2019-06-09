@@ -103,13 +103,26 @@ const sheet: ISheet = {
 };
 
 interface IOwnProps {
+  areSoundEffectsEnabled: boolean;
   classes: { [key: string]: string };
   handleNavigation: () => void;
   handleToggleMenu: () => void;
+  handleToggleMusic: () => void;
+  handleToggleSoundEffects: () => void;
+  isMusicEnabled: boolean;
   isOpen: boolean;
 }
 
-const unstyledHeaderView = ({ classes, handleNavigation, handleToggleMenu, isOpen }: IOwnProps) => (
+const unstyledHeaderView = ({
+  areSoundEffectsEnabled,
+  classes,
+  handleNavigation,
+  handleToggleMenu,
+  handleToggleMusic,
+  handleToggleSoundEffects,
+  isMusicEnabled,
+  isOpen,
+}: IOwnProps) => (
   <header className={classes.wrapper}>
     <MenuButton className={classes.menuButton} isOpen={isOpen} onClick={handleToggleMenu} />
 
@@ -123,6 +136,9 @@ const unstyledHeaderView = ({ classes, handleNavigation, handleToggleMenu, isOpe
       <NavLink to={PLAY} exact>
         Play
       </NavLink>
+
+      <button onClick={handleToggleMusic}>Turn {isMusicEnabled ? 'off' : 'on'} music</button>
+      <button onClick={handleToggleSoundEffects}>Turn {areSoundEffectsEnabled ? 'off' : 'on'} sounds</button>
     </div>
   </header>
 );

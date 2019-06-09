@@ -1,10 +1,11 @@
-import { log } from '../../utils/logger';
-
 import createAssetsManager from '../../../app/modules/play/assets-manager';
 import createController from '../../../app/modules/play/controller';
 import createDisplay from '../../../app/modules/play/display';
 import createEngine from '../../../app/modules/play/engine';
 import createGame from '../../../app/modules/play/game';
+
+import { FPS } from '../../../constants/game-settings';
+import { HEADER_SIZE } from '../../../constants/styles/styles';
 
 const zone000 = require('../../../app/modules/play/zones/000.json');
 
@@ -13,18 +14,17 @@ const ZONE_SUFFIX = '.json';
 
 const gameApi = {
   init: () => {
-    log('Initializing world');
-
     const keyDownUp = ({ type, keyCode }: KeyboardEvent) => {
       controller.keyDownUp(type, keyCode);
     };
 
     const resize = () => {
-      log('Window has been resized');
+      const headerDom = document.querySelector('header');
+      const headerHeight = headerDom ? headerDom.offsetHeight : HEADER_SIZE;
 
       display.resize(
-        document.documentElement.clientWidth,
-        document.documentElement.clientHeight,
+        window.innerWidth,
+        window.innerHeight - headerHeight,
         game.world.getHeight() / game.world.getWidth()
       );
       display.render();
@@ -37,6 +37,7 @@ const gameApi = {
       if (typeof tileSetImage !== 'undefined') {
         let frame;
 
+        // Draw map
         display.drawMap(
           tileSetImage,
           game.world.getTileSet().columns,
@@ -45,11 +46,11 @@ const gameApi = {
           game.world.getTileSet().tileSize
         );
 
+        // Draw carrots
         for (let index = game.world.getCarrots().length - 1; index > -1; --index) {
           const carrot = game.world.getCarrots()[index];
 
           frame = game.world.getTileSet().frames[carrot.getFrameValue()];
-
           display.drawObject(
             tileSetImage,
             frame.getX(),
@@ -61,8 +62,8 @@ const gameApi = {
           );
         }
 
+        // Draw player
         frame = game.world.getTileSet().frames[game.world.getPlayer().getFrameValue()];
-
         display.drawObject(
           tileSetImage,
           frame.getX(),
@@ -75,11 +76,11 @@ const gameApi = {
           frame.getHeight()
         );
 
+        // Draw grass
         for (let index = game.world.getGrass().length - 1; index > -1; --index) {
           const grass = game.world.getGrass()[index];
 
           frame = game.world.getTileSet().frames[grass.getFrameValue()];
-
           display.drawObject(
             tileSetImage,
             frame.getX(),
@@ -99,9 +100,11 @@ const gameApi = {
       if (controller.left.active) {
         game.world.getPlayer().moveLeft();
       }
+
       if (controller.right.active) {
         game.world.getPlayer().moveRight();
       }
+
       if (controller.up.active) {
         game.world.getPlayer().jump();
         controller.up.active = false;
@@ -127,7 +130,7 @@ const gameApi = {
     // @ts-ignore Ignoring null canvas element
     const display = createDisplay(document.querySelector('canvas'));
     const game = createGame();
-    const engine = createEngine(1000 / 30, render, update);
+    const engine = createEngine(FPS, render, update);
 
     if (display.buffer) {
       display.buffer.canvas.height = game.world.getHeight();
@@ -135,19 +138,15 @@ const gameApi = {
       display.buffer.imageSmoothingEnabled = false;
 
       game.world.setup(zone000);
-      log('Zone has been setup');
 
       assetsManager.requestImage(
         'https://raw.githubusercontent.com/frankarendpoth/frankarendpoth.github.io/master/content/pop-vlog/javascript/2018/006-rabbit-trap/rabbit-trap.png',
         image => {
-          log('Image has been fetched');
           assetsManager.setTileSetImage(image);
 
           resize();
-          log('Display has been resized');
 
           engine.start();
-          log('Engine has been started');
         }
       );
 
